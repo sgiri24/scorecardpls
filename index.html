@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>official tasting assessment — form 98-b</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --desk:#191418;
+    --paper:#f7f5ef;
+    --paper-shade:#eceadf;
+    --ink:#26241f;
+    --ink-faint:#5a564c;
+    --ink-ghost:#8b877a;
+    --pen:#1d3a63;
+    --red:#b3282d;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html{background:var(--desk);}
+  body{
+    background:radial-gradient(ellipse at 50% -10%, #262028 0%, var(--desk) 60%);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:30px 10px 70px;
+    font-family:'Special Elite','Courier New',Courier,monospace;
+    color:var(--ink);
+  }
+  .sheet{
+    width:100%;
+    max-width:440px;
+    background:var(--paper);
+    box-shadow:0 1px 0 rgba(255,255,255,.05), 0 18px 50px rgba(0,0,0,.65);
+    padding:26px 22px 34px;
+    position:relative;
+  }
+  .sheet::after{ /* photocopy grain */
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="180" height="180" filter="url(%23n)" opacity="0.55"/></svg>');
+    mix-blend-mode:multiply;
+    opacity:.10;
+  }
+  .holes{display:flex;justify-content:space-around;padding:0 70px;margin-bottom:6px;}
+  .hole{width:13px;height:13px;border-radius:50%;background:var(--desk);box-shadow:inset 0 1px 2px rgba(0,0,0,.8);}
+
+  .formno{
+    font-size:10px;
+    letter-spacing:.1em;
+    display:flex;
+    justify-content:space-between;
+    margin:12px 0 6px;
+    color:var(--ink-faint);
+  }
+  h1{
+    font-size:16px;
+    letter-spacing:.12em;
+    text-align:center;
+    font-weight:400;
+    border-top:2px solid var(--ink);
+    border-bottom:2px solid var(--ink);
+    padding:8px 0;
+  }
+  .cert-sub{
+    text-align:center;
+    font-family:'Caveat',cursive;
+    font-size:17px;
+    color:var(--ink-faint);
+    margin-top:7px;
+    transform:rotate(-.8deg);
+  }
+  .cert-no{
+    text-align:center;
+    font-size:9px;
+    letter-spacing:.18em;
+    color:var(--ink-faint);
+    margin:4px 0 16px;
+  }
+
+  .field{font-size:12px;margin:9px 0;display:flex;gap:8px;align-items:baseline;}
+  .field .typed{
+    border-bottom:1px solid var(--ink);
+    flex:1;
+    padding:0 4px 1px;
+    color:var(--ink);
+    letter-spacing:.04em;
+    font-size:11px;
+  }
+  .field input{
+    border:none;
+    border-bottom:1px solid var(--ink);
+    background:transparent;
+    flex:1;
+    font-family:'Caveat',cursive;
+    font-size:20px;
+    color:var(--pen);
+    caret-color:var(--pen);
+    padding:0 4px 1px;
+    transform:rotate(-.6deg);
+    border-radius:0;
+    outline:none;
+  }
+  .field input:focus{border-bottom:1.5px solid var(--pen);}
+  .field input::placeholder{
+    font-family:'Special Elite',monospace;
+    font-size:10px;
+    letter-spacing:.14em;
+    color:var(--ink-ghost);
+    transform:none;
+  }
+
+  .sectionbar{
+    margin-top:18px;
+    border:1.5px solid var(--ink);
+    background:var(--paper-shade);
+    font-size:9.5px;
+    letter-spacing:.14em;
+    padding:6px 8px;
+  }
+  .rows{border:1.5px solid var(--ink);border-top:none;}
+  .row{
+    padding:11px 10px 12px;
+    border-bottom:1.5px solid var(--ink);
+    position:relative;
+  }
+  .row:last-child{border-bottom:none;}
+  .row.jolt{animation:jolt .35s ease;}
+  @keyframes jolt{
+    0%,100%{transform:none;}
+    25%{transform:translateX(-3px);}
+    60%{transform:translateX(3px);}
+  }
+  .rowhead{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:8px;
+    margin-bottom:8px;
+    min-height:16px;
+    padding-right:92px; /* keep clear of the stamp corner */
+  }
+  .rname{font-size:11.5px;letter-spacing:.03em;}
+  .boxes{display:flex;gap:4px;}
+  .bx{
+    flex:1;
+    height:28px;
+    border:1.3px solid var(--ink);
+    font-size:8.5px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--ink-ghost);
+    position:relative;
+    cursor:pointer;
+    background:transparent;
+    font-family:inherit;
+    padding:0;
+  }
+  .bx:active{background:rgba(38,36,31,.06);}
+  .bx.picked::after{
+    content:"✕";
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Caveat',cursive;
+    font-size:22px;
+    color:var(--pen);
+    transform:rotate(-4deg);
+    animation:markIn .18s ease-out;
+  }
+  @keyframes markIn{from{opacity:0;transform:rotate(-4deg) scale(.5);}to{opacity:1;transform:rotate(-4deg) scale(1);}}
+  .bx.voided::after{color:rgba(29,58,99,.55);}
+  .bx.voided .scratch{
+    content:"";
+    position:absolute;
+    inset:-2px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Caveat',cursive;
+    font-size:26px;
+    color:var(--red);
+    transform:rotate(12deg);
+    animation:scratchIn .25s ease-out both;
+  }
+  @keyframes scratchIn{from{opacity:0;transform:rotate(12deg) scale(1.8);}to{opacity:.92;transform:rotate(12deg) scale(1);}}
+  .bx.circled::before{
+    content:"";
+    position:absolute;
+    inset:-4px;
+    border:2.2px solid var(--red);
+    border-radius:50%;
+    animation:ringIn .3s cubic-bezier(.16,1,.3,1) both;
+  }
+  @keyframes ringIn{from{opacity:0;transform:scale(1.7);}to{opacity:.9;transform:scale(1);}}
+
+  .stamp{
+    position:absolute;
+    right:8px;
+    top:5px;
+    border:2.5px double var(--red);
+    color:var(--red);
+    font-size:9px;
+    letter-spacing:.22em;
+    padding:3px 7px;
+    transform:rotate(-6deg);
+    opacity:.88;
+    pointer-events:none;
+    animation:stampIn .4s cubic-bezier(.16,1,.3,1) both;
+  }
+  @keyframes stampIn{
+    0%{opacity:0;transform:rotate(-6deg) scale(2.1);filter:blur(2px);}
+    65%{opacity:.88;transform:rotate(-6deg) scale(.96);filter:blur(0);}
+    100%{opacity:.88;transform:rotate(-6deg) scale(1);}
+  }
+  .note{
+    margin-top:7px;
+    font-family:'Caveat',cursive;
+    font-size:17px;
+    color:var(--red);
+    min-height:20px;
+    transform:rotate(-1.4deg);
+    transform-origin:left center;
+  }
+  .note.waiting{
+    font-family:'Special Elite',monospace;
+    font-size:9px;
+    letter-spacing:.12em;
+    color:var(--ink-ghost);
+    transform:none;
+  }
+  .note.reveal{animation:noteIn .45s ease both;}
+  @keyframes noteIn{from{opacity:0;transform:rotate(-1.4deg) translateY(3px);}to{opacity:1;transform:rotate(-1.4deg) translateY(0);}}
+
+  .certify{
+    display:block;
+    width:100%;
+    margin-top:22px;
+    padding:13px;
+    background:transparent;
+    color:var(--ink);
+    border:2px solid var(--ink);
+    font-family:inherit;
+    font-size:12px;
+    letter-spacing:.26em;
+    cursor:pointer;
+    transition:background .15s, color .15s;
+  }
+  .certify:active{background:var(--ink);color:var(--paper);}
+  .certify.deny{animation:deny .4s ease;}
+  @keyframes deny{
+    0%,100%{transform:none;}
+    20%,60%{transform:translateX(-5px);}
+    40%,80%{transform:translateX(5px);}
+  }
+
+  .bigstamp{
+    display:none;
+    margin:28px auto 8px;
+    width:264px;
+    border:3.5px double var(--red);
+    color:var(--red);
+    text-align:center;
+    padding:14px 10px;
+    transform:rotate(-5deg);
+    position:relative;
+  }
+  .bigstamp.show{display:block;animation:bigstampIn .55s cubic-bezier(.16,1,.3,1) both;}
+  @keyframes bigstampIn{
+    0%{opacity:0;transform:rotate(-5deg) scale(1.9);filter:blur(3px);}
+    60%{opacity:.92;transform:rotate(-5deg) scale(.97);filter:blur(0);}
+    100%{opacity:.92;transform:rotate(-5deg) scale(1);}
+  }
+  .bigstamp .n{font-size:40px;letter-spacing:.06em;line-height:1;}
+  .bigstamp .l{font-size:9px;letter-spacing:.26em;margin-top:6px;}
+
+  .decl{
+    display:none;
+    text-align:center;
+    font-size:9.5px;
+    color:var(--ink-faint);
+    line-height:2;
+    letter-spacing:.05em;
+    margin-top:14px;
+  }
+  .decl.show{display:block;animation:declIn .6s ease .35s both;}
+  @keyframes declIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+  .refs{
+    margin-top:22px;
+    padding-top:14px;
+    border-top:1.5px dashed rgba(38,36,31,.45);
+    font-size:9.5px;
+    line-height:2.1;
+    letter-spacing:.04em;
+    color:var(--ink-faint);
+    text-align:center;
+  }
+  .refs .rhead{font-size:9px;letter-spacing:.24em;color:var(--ink);margin-bottom:4px;}
+  .hashtag-foot{
+    text-align:center;
+    margin-top:14px;
+    font-size:9.5px;
+    letter-spacing:.14em;
+    color:var(--ink-ghost);
+  }
+
+  .toast{
+    position:fixed;
+    left:50%;
+    bottom:26px;
+    transform:translateX(-50%) translateY(16px);
+    background:var(--paper);
+    color:var(--red);
+    border:1.5px solid var(--red);
+    padding:10px 16px;
+    font-size:10.5px;
+    letter-spacing:.06em;
+    box-shadow:0 8px 30px rgba(0,0,0,.5);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s, transform .25s;
+    max-width:88%;
+    text-align:center;
+    z-index:60;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){
+    .row.jolt,.certify.deny,.bigstamp.show,.decl.show,.stamp,
+    .bx.picked::after,.bx.circled::before,.bx.voided .scratch,.note.reveal{animation:none;}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="holes"><div class="hole"></div><div class="hole"></div></div>
+
+  <div class="formno"><span>FORM 98-B (REV. ESTATE)</span><span>#WINEWITHGOKA</span></div>
+  <h1>OFFICIAL TASTING ASSESSMENT</h1>
+  <div class="cert-sub">certificat officiel de dégustation</div>
+  <div class="cert-no">CERTIFICAT N° 001 / 001 · MIS EN BOUTEILLE 1994</div>
+
+  <div class="field"><span>VINTAGE:</span><span class="typed">SURYA — SINGLE ESTATE · NEW YORK | BLR / MAA / SIN TERROIR</span></div>
+  <div class="field"><span>BOTTLES PRODUCED:</span><span class="typed">ONE (1)</span></div>
+  <div class="field"><label for="judge">JUDGE:</label><input id="judge" type="text" autocomplete="off" placeholder="PRINT NAME LEGIBLY" maxlength="40"></div>
+
+  <div class="sectionbar">SECTION A — SENSORY EVALUATION. COMPLETE ALL CATEGORIES. SCORES ARE FINAL.*</div>
+  <div class="rows" id="rows"></div>
+
+  <button class="certify" id="certifyBtn">SUBMIT FOR CERTIFICATION</button>
+
+  <div class="bigstamp" id="bigstamp">
+    <div class="n">98 PTS</div>
+    <div class="l">FINAL · NOT SUBJECT TO APPEAL</div>
+  </div>
+  <div class="decl" id="decl"></div>
+
+  <div class="refs">
+    <div class="rhead">REFERENCES AVAILABLE UPON REQUEST</div>
+    ESTATE MATRIARCH — "HEY, GOOD LUCK, SHIVANGI" — +91 8XXXX XXXXX<br>
+    HIS THERAPIST — "I CANNOT LEGALLY COMMENT" — NUMBER ON REQUEST
+  </div>
+
+  <div class="hashtag-foot">* FINAL AS DETERMINED BY THE ESTATE · #WINEWITHGOKA</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const categories = [
+  {name:"nose — first impression", estate:10},
+  {name:"palate — conversation", estate:10},
+  {name:"structure — emotional availability", estate:10},
+  {name:"finish — one more story", estate:10},
+  {name:"pairing — tiramisu", estate:10},
+  {name:"pairing — family", estate:10},
+  {name:"argument vintage — always wins", estate:10},
+  {name:"decanting — does not awaken til 10 AM minimum", estate:4},
+];
+
+const upMessages = [
+  "corrected. sommelier bias detected.",
+  "amended per estate records.",
+  "reviewed. your generosity was insufficient.",
+  "the estate appreciates your input. overruled.",
+  "recalibrated to objective truth.",
+  "adjusted for accuracy. you're welcome.",
+  "sample again. slowly, this time.",
+  "your palate needs training. amended.",
+  "noted, discarded, corrected.",
+  "corrected. the estate does not negotiate.",
+  "amended. history will side with the estate.",
+];
+
+const downMessages = [
+  "amended downward. the estate is honest about its faults.",
+  "corrected. even the estate has limits.",
+  "reduced per matriarch testimony.",
+  "amended downward. humility is part of the terroir.",
+];
+
+const exactMessages = [
+  "no correction required. impeccable palate.",
+  "precisely right. have you considered sommelier school?",
+  "correct. the estate suspects collusion.",
+];
+
+const lockMessages = [
+  "THIS CATEGORY HAS BEEN FINALIZED. PLEASE STOP.",
+  "THE ESTATE HAS NOTED YOUR PERSISTENCE.",
+  "CLICKING HARDER WILL NOT CHANGE THE VINTAGE.",
+  "SECURITY HAS BEEN NOTIFIED. SECURITY IS HIS MOTHER.",
+  "PLEASE. JUST ENJOY THE WINE.",
+];
+
+const rowsEl = document.getElementById('rows');
+const toastEl = document.getElementById('toast');
+const judgeEl = document.getElementById('judge');
+let toastTimer;
+let upIdx = 0, downIdx = 0, exactIdx = 0, lockIdx = 0;
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function judgeName(){
+  const v = judgeEl.value.trim();
+  return v ? 'judge ' + v : 'judge';
+}
+
+function showToast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>toastEl.classList.remove('show'), 2600);
+}
+
+function setNote(el, msg){
+  el.classList.remove('waiting');
+  el.textContent = msg;
+  el.classList.remove('reveal');
+  void el.offsetWidth;
+  el.classList.add('reveal');
+}
+
+function jolt(row){
+  row.classList.remove('jolt');
+  void row.offsetWidth;
+  row.classList.add('jolt');
+}
+
+categories.forEach((cat)=>{
+  cat.locked = false;
+  cat.pending = false;
+
+  const row = document.createElement('div');
+  row.className = 'row';
+
+  const head = document.createElement('div');
+  head.className = 'rowhead';
+  const nameEl = document.createElement('span');
+  nameEl.className = 'rname';
+  nameEl.textContent = cat.name;
+  head.appendChild(nameEl);
+  row.appendChild(head);
+
+  const boxes = document.createElement('div');
+  boxes.className = 'boxes';
+  cat.boxEls = [];
+  for(let i=1;i<=10;i++){
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'bx';
+    b.textContent = i;
+    b.setAttribute('aria-label', cat.name + ' — score ' + i);
+    b.addEventListener('click', ()=>{
+      if(cat.locked){
+        jolt(row);
+        showToast(lockMessages[Math.min(lockIdx, lockMessages.length - 1)]);
+        lockIdx++;
+        return;
+      }
+      if(cat.pending) return; // first instinct rule: her initial mark stands (briefly)
+      cat.pending = true;
+
+      // her mark, in pen
+      b.classList.add('picked');
+
+      // then the estate reviews
+      setTimeout(()=>{
+        jolt(row);
+
+        const estateBox = cat.boxEls[cat.estate - 1];
+        let msg;
+        let stampText;
+
+        if(i === cat.estate){
+          b.classList.add('circled');
+          msg = exactMessages[exactIdx % exactMessages.length]; exactIdx++;
+          stampText = 'CONFIRMED';
+        } else {
+          // scratch out her mark in red
+          b.classList.add('voided');
+          const scratch = document.createElement('span');
+          scratch.className = 'scratch';
+          scratch.textContent = '✕';
+          b.appendChild(scratch);
+          estateBox.classList.add('circled');
+          if(i < cat.estate){
+            msg = upMessages[upIdx % upMessages.length]; upIdx++;
+          } else {
+            msg = downMessages[downIdx % downMessages.length]; downIdx++;
+          }
+          stampText = 'AMENDED';
+        }
+
+        const stamp = document.createElement('span');
+        stamp.className = 'stamp';
+        stamp.textContent = stampText;
+        head.appendChild(stamp);
+
+        setNote(note, msg);
+        showToast(msg.toUpperCase());
+        cat.locked = true;
+        cat.done = true;
+      }, 600);
+    });
+    boxes.appendChild(b);
+    cat.boxEls.push(b);
+  }
+  row.appendChild(boxes);
+
+  const note = document.createElement('div');
+  note.className = 'note waiting';
+  note.textContent = 'AWAITING SCORE';
+  row.appendChild(note);
+
+  rowsEl.appendChild(row);
+});
+
+document.getElementById('certifyBtn').addEventListener('click', (e)=>{
+  const btn = e.currentTarget;
+  const deny = (msg)=>{
+    btn.classList.remove('deny');
+    void btn.offsetWidth;
+    btn.classList.add('deny');
+    showToast(msg);
+  };
+
+  if(!judgeEl.value.trim()){
+    deny("THE ESTATE CANNOT CERTIFY AN ANONYMOUS EVALUATION. PRINT YOUR NAME.");
+    judgeEl.focus();
+    return;
+  }
+  const remaining = categories.filter(c=>!c.done).length;
+  if(remaining > 0){
+    deny("COMPLETE ALL CATEGORIES. THE ESTATE VALUES YOUR HONEST OPINION.");
+    return;
+  }
+
+  const safeName = judgeName().toUpperCase().replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  document.getElementById('decl').innerHTML =
+    'THANK YOU, ' + safeName + '.<br>' +
+    'YOUR EVALUATION HAS BEEN REVIEWED AND AMENDED BY THE ESTATE.<br>' +
+    'SOMMELIER DISCLOSURE: SOMMELIER IS THE SUBJECT.<br>' +
+    'NOT SUBJECT TO APPEAL.';
+
+  document.getElementById('bigstamp').classList.add('show');
+  document.getElementById('decl').classList.add('show');
+  setTimeout(()=>{
+    document.getElementById('bigstamp').scrollIntoView({behavior: reducedMotion ? 'auto' : 'smooth', block:'center'});
+  }, 150);
+});
+</script>
+</body>
+</html>
